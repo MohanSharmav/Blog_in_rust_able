@@ -1,9 +1,17 @@
+use actix_web::guard::Post;
 use serde::Serialize;
 use sqlx::{Error, Pool, Postgres, Row};
 use sqlx::postgres::{PgPoolOptions, PgRow};
 
 #[derive(Debug, Clone, PartialEq,Serialize)]
 pub struct Foo {
+    name: String,
+}
+
+#[derive(Debug, Clone, PartialEq,Serialize)]
+pub struct posts{
+    title: String,
+    description: String,
     name: String,
 }
 
@@ -26,15 +34,12 @@ let mut vect: Vec<Foo>=Vec::new();
         .fetch_all(&pool)
         .await.expect("Unable to");
 
-    //let mut original_array =[];
-// let mut original_array=[Fooo{name: "Cricket".to_string() }];
     for row in rows{
         let names: String=row.get("name");
 
          let original_Array = Foo { name: names.to_string() };
 
         vect.push(original_Array);
-      //  print!("json   is {:?}", original_array);
 
     }
 
@@ -47,9 +52,7 @@ let mut vect: Vec<Foo>=Vec::new();
 
 
 
-async fn select_all_from_table() -> Result<(),Error> {
-
-
+pub async fn select_all_from_table() -> Result<String,Error> {
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
 
@@ -60,17 +63,19 @@ async fn select_all_from_table() -> Result<(),Error> {
         .connect(&db_url)
         .await.expect("Unable to connect to Postgres");
 
+    let mut all_posts:Vec<posts> = Vec::new();
+
+
     let rows = sqlx::query("SELECT title,description,name FROM posts")
           .fetch_all(&pool)
           .await?;
-    for row in rows{
-        let title:String=row.get("title");
-       let description: String = row.get("description");
-        let name:String= row.get("name");
-        println!("{}", title);
-        println!("{}", description);
-        println!("{}", name);
+    for row in rows {
+        let title: String = row.get("title");
+        let description: String = row.get("description");
+        let name: String = row.get("name");
+        let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
+        all_posts.push(all_posts_json);
     }
-
-    Ok(())
+let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
+    Ok(all_posts_json)
 }
