@@ -7,5 +7,9 @@
 <body><a>{{1}}
     {{2}}</a>
 
+{{#each index}}
+    {{>index index=.}}
+
+{{/each}}
 </body>
 </html>
