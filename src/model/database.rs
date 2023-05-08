@@ -28,7 +28,6 @@ pub(crate) async fn selecting() ->Result<Vec<String>, Error>{
         .connect(&db_url)
         .await.expect("Unable to connect to Postgres");
 
-    select_all_from_table().await.expect("cant select");
 
 let mut vect=Vec::new();
     let  rows = sqlx::query("SELECT name FROM categories")
@@ -45,7 +44,7 @@ let mut vect=Vec::new();
     }
 // let x=std::mem::replace(&mut Foo,"a");
   //  println!("xxxxx x x x x{:?}",x);
-    let json=serde_json::to_string(&vect).expect("asdasd");
+  //  let json=serde_json::to_string(&vect).expect("asdasd");
     Ok(vect)
 }
 

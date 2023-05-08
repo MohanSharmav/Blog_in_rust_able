@@ -5,6 +5,8 @@ use std::future::Future;
 use actix_web::HttpResponse;
 use crate::model::database::{select_all_from_table, selecting};
 use futures::future;
+use serde_json::json;
+use warp::body::json;
 
 pub async fn get_all_posts()-> HttpResponse
 {
@@ -12,20 +14,25 @@ pub async fn get_all_posts()-> HttpResponse
 let mut handlebars= handlebars::Handlebars::new();
     let index_template = fs::read_to_string("templates/index.hbs").unwrap();
     handlebars
-        .register_template_string("index", &index_template)
-        .unwrap();
+        .register_template_string("index", &index_template);
 
+    //test start
 
-    let x= selecting().await.expect("adssad");
+    //test end
+
+ //   let x= selecting().await.expect("adssad");
 
     let all_posts_to_front_end=selecting().await.expect("adssad");
 
+    let mut hi =HashMap::new();
+    hi.insert("`o","hello");
+ //  println!("{:?}", all_posts_to_front_end);
 
-
-    let html = handlebars.render("data", &all_posts_to_front_end).unwrap();
-
+//    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end})).unwrap() ;
+    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end})).unwrap() ;
+    //let html = handlebars.render("index", &json!({"o":"onee"})).unwrap() ;
+println!("{}", html );
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
-
 }
