@@ -16,7 +16,7 @@ pub struct posts{
     name: String,
 }
 
-pub(crate) async fn selecting() ->Result<Vec<String>, Error>{
+pub(crate) async fn selecting() ->Result<Vec<String>, ()>{
 
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
@@ -37,7 +37,7 @@ let mut vect=Vec::new();
     for row in rows{
         let names: String=row.get("name");
 
-        // let original_Array =Foo { name: names.to_string() };
+      //  let original_Array =Foo { name: names.to_string() };
 
         vect.push(names);
 
@@ -51,7 +51,7 @@ let mut vect=Vec::new();
 
 
 
-pub async fn select_all_from_table() -> Result<Vec<posts>,Error> {
+pub async fn select_all_from_table() -> Result<Vec<String>,Error> {
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
 
@@ -62,7 +62,7 @@ pub async fn select_all_from_table() -> Result<Vec<posts>,Error> {
         .connect(&db_url)
         .await.expect("Unable to connect to Postgres");
 
-    let mut all_posts:Vec<posts> = Vec::new();
+    let mut all_posts = Vec::new();
 
 
     let rows = sqlx::query("SELECT title,description,name FROM posts")
@@ -72,9 +72,12 @@ pub async fn select_all_from_table() -> Result<Vec<posts>,Error> {
         let title: String = row.get("title");
         let description: String = row.get("description");
         let name: String = row.get("name");
-        let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
-        all_posts.push(all_posts_json);
+        let all_posts_string= title+ &*description + &*name;
+       // let all_posts_string=format!(title, description, name);
+     //   let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
+        all_posts.push(all_posts_string);
     }
-let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
+    println!("{:?}",all_posts);
+//let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
     Ok(all_posts)
 }

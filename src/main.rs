@@ -2,7 +2,7 @@ mod model;
 mod controller;
 
 use std::env::Args;
-use std::fmt::{Debug, Formatter};
+use std::fmt::{Debug, Error, Formatter};
 use std::future::Future;
 use std::io::Read;
 use std::path::Path;
@@ -15,6 +15,7 @@ use warp::reply::with_status;
 use controller::home_page::get_all_posts;
 use model::database::selecting;
 use warp::{get, Rejection, Reply};
+use crate::model::database::select_all_from_table;
 
 async fn index(req: HttpRequest)-> Result<NamedFile>{
      let path= Path::new("templates/index.hbs");
@@ -29,7 +30,7 @@ async fn main() -> Result<()>{
 
 
 selecting().await.expect("TODO: panic message");
-     
+     select_all_from_table().await.expect("paamnaic message");
      //test end 
      HttpServer::new(|| {
           App::new()

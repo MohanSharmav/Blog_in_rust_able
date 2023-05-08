@@ -22,14 +22,13 @@ let mut handlebars= handlebars::Handlebars::new();
 
  //   let x= selecting().await.expect("adssad");
 
+    let home_page=select_all_from_table().await.expect("adssad");
+
     let all_posts_to_front_end=selecting().await.expect("adssad");
 
-    let mut hi =HashMap::new();
-    hi.insert("`o","hello");
- //  println!("{:?}", all_posts_to_front_end);
 
-//    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end})).unwrap() ;
-    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end})).unwrap() ;
+    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end,"p":&home_page})).unwrap() ;
+
     //let html = handlebars.render("index", &json!({"o":"onee"})).unwrap() ;
 println!("{}", html );
     HttpResponse::Ok()
