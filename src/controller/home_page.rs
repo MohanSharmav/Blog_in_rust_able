@@ -18,11 +18,11 @@ let mut handlebars= handlebars::Handlebars::new();
 
     let x= selecting().await.expect("adssad");
 
-    let all_posts_to_front_end:String=select_all_from_table().await.expect("adssad");
-    let mut data =HashMap::new();
-    data.insert("1",x);
-data.insert("2",all_posts_to_front_end);
-    let html = handlebars.render("index", &data).unwrap();
+    let all_posts_to_front_end=selecting().await.expect("adssad");
+
+
+
+    let html = handlebars.render("data", &all_posts_to_front_end).unwrap();
 
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

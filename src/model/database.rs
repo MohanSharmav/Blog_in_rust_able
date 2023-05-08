@@ -2,12 +2,13 @@ use actix_web::guard::Post;
 use serde::Serialize;
 use sqlx::{Error, Pool, Postgres, Row};
 use sqlx::postgres::{PgPoolOptions, PgRow};
-
+use serde::Deserialize;
+#[derive(Deserialize)]
 #[derive(Debug, Clone, PartialEq,Serialize)]
 pub struct Foo {
     name: String,
 }
-
+#[derive(Deserialize)]
 #[derive(Debug, Clone, PartialEq,Serialize)]
 pub struct posts{
     title: String,
@@ -15,7 +16,7 @@ pub struct posts{
     name: String,
 }
 
-pub(crate) async fn selecting() ->Result<String, Error>{
+pub(crate) async fn selecting() ->Result<Vec<String>, Error>{
 
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
@@ -29,7 +30,7 @@ pub(crate) async fn selecting() ->Result<String, Error>{
 
     select_all_from_table().await.expect("cant select");
 
-let mut vect: Vec<Foo>=Vec::new();
+let mut vect=Vec::new();
     let  rows = sqlx::query("SELECT name FROM categories")
         .fetch_all(&pool)
         .await.expect("Unable to");
@@ -37,22 +38,21 @@ let mut vect: Vec<Foo>=Vec::new();
     for row in rows{
         let names: String=row.get("name");
 
-         let original_Array = Foo { name: names.to_string() };
+        // let original_Array =Foo { name: names.to_string() };
 
-        vect.push(original_Array);
+        vect.push(names);
 
     }
-
-    println!("Fooooo  finalk is  is {:?}", vect);
+// let x=std::mem::replace(&mut Foo,"a");
+  //  println!("xxxxx x x x x{:?}",x);
     let json=serde_json::to_string(&vect).expect("asdasd");
-    println!("aaaaaa {:?}",json);
-    Ok(json)
+    Ok(vect)
 }
 
 
 
 
-pub async fn select_all_from_table() -> Result<String,Error> {
+pub async fn select_all_from_table() -> Result<Vec<posts>,Error> {
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
 
@@ -77,5 +77,5 @@ pub async fn select_all_from_table() -> Result<String,Error> {
         all_posts.push(all_posts_json);
     }
 let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
-    Ok(all_posts_json)
+    Ok(all_posts)
 }
