@@ -3,17 +3,20 @@ use serde::Serialize;
 use sqlx::{Error, Pool, Postgres, Row};
 use sqlx::postgres::{PgPoolOptions, PgRow};
 use serde::Deserialize;
+use sqlx::FromRow;
+
 #[derive(Deserialize)]
 #[derive(Debug, Clone, PartialEq,Serialize)]
 pub struct Foo {
     name: String,
 }
+
 #[derive(Deserialize)]
 #[derive(Debug, Clone, PartialEq,Serialize)]
 pub struct posts{
-    title: String,
-    description: String,
-    name: String,
+    pub(crate) title: String,
+    pub(crate) description: String,
+    pub(crate) name: String,
 }
 
 pub(crate) async fn selecting() ->Result<Vec<String>, ()>{
