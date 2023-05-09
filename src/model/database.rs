@@ -72,12 +72,11 @@ pub async fn select_all_from_table() -> Result<Vec<String>,Error> {
         let title: String = row.get("title");
         let description: String = row.get("description");
         let name: String = row.get("name");
-        let all_posts_string= title+ &*description + &*name;
+        let all_posts_string= title+" " +&*description +" "+ &*name;
        // let all_posts_string=format!(title, description, name);
      //   let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
         all_posts.push(all_posts_string);
     }
-    println!("{:?}",all_posts);
 //let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
     Ok(all_posts)
 }

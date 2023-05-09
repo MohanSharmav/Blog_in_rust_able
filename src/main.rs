@@ -15,7 +15,10 @@ use warp::reply::with_status;
 use controller::home_page::get_all_posts;
 use model::database::selecting;
 use warp::{get, Rejection, Reply};
-use crate::model::database::select_all_from_table;
+use crate::controller::single_post_controller::get_single_post;
+use crate::model::database::{select_all_from_table};
+
+
 
 async fn index(req: HttpRequest)-> Result<NamedFile>{
      let path= Path::new("templates/index.hbs");
@@ -34,9 +37,8 @@ selecting().await.expect("TODO: panic message");
      //test end 
      HttpServer::new(|| {
           App::new()
-              .service(web::resource("/").to(index))
-              .service(web::resource("/hi").to(index))
-              .service(web::resource("/hello").to(get_all_posts))
+              .service(web::resource("/").to(get_all_posts))
+              .service(web::resource("/{title}").to(get_single_post))
      })
          .bind("127.0.0.1:8080")?
          .run().await.expect("TODO: panic message");

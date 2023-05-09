@@ -1,8 +1,9 @@
 use std::collections::HashMap;
+use std::error::Error;
 use std::fmt::Display;
 use std::fs;
 use std::future::Future;
-use actix_web::HttpResponse;
+use actix_web::{HttpResponse, web};
 use crate::model::database::{select_all_from_table, selecting};
 use futures::future;
 use serde_json::json;
@@ -35,3 +36,5 @@ println!("{}", html );
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
+
+
