@@ -24,7 +24,6 @@ let mut x:i32 =0;
 
     let mut sii:Vec<posts>=Vec::new();
 
-    sii[0].title= "ass".to_string();
 
     //inscrease the 1 to loop
     for row in rows {

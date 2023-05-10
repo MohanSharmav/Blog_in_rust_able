@@ -4,7 +4,7 @@ use std::fmt::Display;
 use std::fs;
 use std::future::Future;
 use actix_web::{HttpResponse, web};
-use crate::model::database::{select_all_from_table, selecting};
+use crate::model::database::{posts, select_all_from_table, select_posts, selecting};
 use futures::future;
 use serde_json::json;
 use warp::body::json;
@@ -12,6 +12,7 @@ use warp::body::json;
 pub async fn get_all_posts()-> HttpResponse
 {
 
+    select_posts().await.expect("Asd");
 let mut handlebars= handlebars::Handlebars::new();
     let index_template = fs::read_to_string("templates/index.hbs").unwrap();
     handlebars
@@ -27,8 +28,9 @@ let mut handlebars= handlebars::Handlebars::new();
 
     let all_posts_to_front_end=selecting().await.expect("adssad");
 
+    let all_posts_in_struct:Vec<posts>=select_posts().await.expect("ast");
 
-    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end,"p":&home_page})).unwrap() ;
+    let html = handlebars.render("index", &json!({"o":&all_posts_to_front_end,"p":&home_page,"q":&all_posts_in_struct})).unwrap() ;
 
     //let html = handlebars.render("index", &json!({"o":"onee"})).unwrap() ;
 println!("{}", html );

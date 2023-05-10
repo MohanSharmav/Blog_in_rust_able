@@ -1,3 +1,4 @@
+use std::arch::asm;
 use actix_web::guard::Post;
 use serde::Serialize;
 use sqlx::{Error, Pool, Postgres, Row};
@@ -12,7 +13,7 @@ pub struct Foo {
 }
 
 #[derive(Deserialize)]
-#[derive(Debug, Clone, PartialEq,Serialize)]
+#[derive(Debug, Clone, PartialEq,Serialize,sqlx::FromRow)]
 pub struct posts{
     pub(crate) title: String,
     pub(crate) description: String,
@@ -80,7 +81,27 @@ pub async fn select_all_from_table() -> Result<Vec<String>,Error> {
      //   let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
         all_posts.push(all_posts_string);
     }
-    println!("⭐ ⭐ ⭐ ⭐ {:?}", all_posts);
 //let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
     Ok(all_posts)
+}
+
+pub async fn select_posts()->Result<Vec<posts>,Error>
+{
+    dotenv::dotenv().expect("Unable to load environment variables from .env file");
+
+    let db_url = std::env::var("DATABASE_URL").expect("Unable to read DATABASE_URL env var");
+
+    let mut pool = PgPoolOptions::new()
+        .max_connections(100)
+        .connect(&db_url)
+        .await.expect("Unable to connect to Postgres");
+
+    let mut postsing = sqlx::query_as::<_, posts>("select title, description, name from posts")
+        .fetch_all(&pool)
+        .await
+        .unwrap();
+
+    println!("😊😊😊😊😊😊😊😊 {:?}",postsing);
+
+    Ok(postsing)
 }
