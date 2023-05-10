@@ -80,6 +80,7 @@ pub async fn select_all_from_table() -> Result<Vec<String>,Error> {
      //   let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
         all_posts.push(all_posts_string);
     }
+    println!("⭐ ⭐ ⭐ ⭐ {:?}", all_posts);
 //let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
     Ok(all_posts)
 }
