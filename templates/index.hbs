@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <title>Titljjjjje</title>
 </head>
-<body>
-<ul class="people_list">
+<body><ul class="people_list">
     {{#each o}}
         <a href="#"><li>{{this}}</li></a>
     {{/each}}
@@ -19,7 +18,13 @@
 
 
 {{q.[1].title}}
-
+<p>
+{{#each q}}
+    {{#each this}}<
+        <a href="{{this}}">  {{ this }}</a>
+    {{/each}}<br>
+{{/each}}
+</p>
 </ul>
 </body>
 </html>
