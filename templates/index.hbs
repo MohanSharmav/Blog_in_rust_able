@@ -21,11 +21,13 @@
 
 {{q.[1].title}}
 <p>
-{{#each q}}
-        <a href="/posts/{{this.title}}">  {{ this.title }}</a>
-{{/each}}
 
-
+    {{#each q}}
+    <a href="/posts/{{this.title}}">
+        {{#each this}}  " "
+             {{ this }}
+      {{/each}}<br>
+    {{/each}}</a>
 </p>
 </ul>
 </body>

@@ -19,7 +19,7 @@ pub async fn category_controller(path: web::Path<String>)->HttpResponse
     let category_postinng=category_controller_database_function(category_input).await.expect("TODO: panic message");
 
     println!(" 😋  😋  😋 {:?}",category_postinng);
-    let html = handlebars.render("index", &json!({"z":&category_postinng})).unwrap() ;
+    let html = handlebars.render("category", &json!({"list_category":&category_postinng})).unwrap() ;
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
