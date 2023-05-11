@@ -18,7 +18,7 @@ use warp::{get, Rejection, Reply};
 use crate::controller::category_controller::{category_controller};
 use crate::controller::single_post_controller::get_single_post;
 use crate::model::database::{select_all_from_table};
-
+use crate::model::pagination_database::get_users;
 
 
 async fn index(req: HttpRequest)-> Result<NamedFile>{
@@ -32,6 +32,8 @@ async fn main() -> Result<()>{
 //test start
      get_all_posts().await;
 
+     get_users().await.expect("asdsdssd");
+     
 selecting().await.expect("TODO: panic message");
      select_all_from_table().await.expect("paamnaic message");
      //test end 
@@ -40,6 +42,7 @@ selecting().await.expect("TODO: panic message");
               .service(web::resource("/").to(get_all_posts))
               .service(web::resource("/categories/{name}").to(category_controller))
               .service(web::resource("/posts/{title}").to(get_single_post))
+            //  .service(web::resource("/users").route(web::get().to(get_users)))
      })
          .bind("127.0.0.1:8080")?
          .run().await.expect("TODO: panic message");
