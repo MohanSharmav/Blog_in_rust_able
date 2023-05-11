@@ -1,4 +1,4 @@
-{{!--
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,13 +6,16 @@
 </head>
 <body>
 <p>
-    asdss
-   {{#each z}}-->
-<!--        {{#each this}}<-->
-<!--            <a href="{{this}}">  {{ this }}</a>-->
-<!--        {{/each}}<br>-->
-<!--    {{/each}}-->
+
+    {{#each p}}
+    <a href="/posts/{{this.title}}">
+        {{#each this}}  " "
+            {{ this }}
+        {{/each}}<br>
+    {{/each}}</a>
+</p>
+
 </p>
 </body>
 </html>
---}}
+

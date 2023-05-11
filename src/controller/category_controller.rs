@@ -12,14 +12,14 @@ pub async fn category_controller(path: web::Path<String>)->HttpResponse
     println!("😊😊😊😊😊😊 comee on{:?}",category_input);
     println!("😊😊😊😊😊😊-------------{:?}",category_input);
     let mut handlebars= handlebars::Handlebars::new();
-    let index_template = fs::read_to_string("templates/index.hbs").unwrap();
+    let index_template = fs::read_to_string("templates/category.hbs").unwrap();
     handlebars
-        .register_template_string("single", &index_template).expect("TODO: panic message");
+        .register_template_string("category", &index_template).expect("TODO: panic message");
 
     let category_postinng=category_controller_database_function(category_input).await.expect("TODO: panic message");
 
     println!(" 😋  😋  😋 {:?}",category_postinng);
-    let html = handlebars.render("category", &json!({"list_category":&category_postinng})).unwrap() ;
+    let html = handlebars.render("category", &json!({"p":&category_postinng})).unwrap() ;
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
