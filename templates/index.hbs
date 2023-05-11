@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<ul class="people_list">
+<ul class="listing category">
     {{#each o}}
-        <a href="{{this}}"><li>{{this}}</li></a>
+        <a href="/categories/{{this}}"><li>{{this}}</li></a>
     {{/each}}
 </ul>
 
@@ -22,9 +22,7 @@
 {{q.[1].title}}
 <p>
 {{#each q}}
-    {{#each this}}<
-        <a href="{{this}}">  {{ this }}</a>
-    {{/each}}<br>
+        <a href="/posts/{{this.title}}">  {{ this.title }}</a>
 {{/each}}
 
 

@@ -8,21 +8,17 @@ use crate::model::database::{posts, select_all_from_table, select_posts, selecti
 use futures::future;
 use serde_json::json;
 use warp::body::json;
+use crate::controller::category_controller::category_controller;
 
 pub async fn get_all_posts()-> HttpResponse
 {
 
-    select_posts().await.expect("Asd");
 let mut handlebars= handlebars::Handlebars::new();
     let index_template = fs::read_to_string("templates/index.hbs").unwrap();
     handlebars
         .register_template_string("index", &index_template);
 
-    //test start
 
-    //test end
-
- //   let x= selecting().await.expect("adssad");
 
     let home_page=select_all_from_table().await.expect("adssad");
 

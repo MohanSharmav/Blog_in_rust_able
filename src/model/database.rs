@@ -101,7 +101,6 @@ pub async fn select_posts()->Result<Vec<posts>,Error>
         .await
         .unwrap();
 
-    println!("😊😊😊😊😊😊😊😊 {:?}",postsing);
 
     Ok(postsing)
 }

@@ -22,13 +22,9 @@ pub async fn query_single_post(titles: String) ->Result<Vec<String>,Error>
         .await.expect("Unable to");
 let mut x:i32 =0;
 
-    let mut sii:Vec<posts>=Vec::new();
+  //  let mut sii:Vec<posts>=Vec::new();
 
-
-    //inscrease the 1 to loop
     for row in rows {
-
-        x=x+1;
 
        let  title:String= row.get("title");
         let description: String = row.get("description");
@@ -38,6 +34,6 @@ let mut x:i32 =0;
         single_post.push(single_post_string);
     }
 println!("{:?}",single_post);
-println!("siiii  i i i ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ {:?}",sii.get(1));
+//println!("siiii  i i i ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ {:?}",sii.get(1));
     Ok(single_post)
 }
