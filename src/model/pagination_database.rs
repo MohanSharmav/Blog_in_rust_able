@@ -47,11 +47,6 @@ pub fn paginate<T>(items: Vec<T>, page: i32, per_page: i32) -> Vec<T> {
     items.into_iter().skip(start_index as usize).take(per_page as usize).collect()
 }
 
-// pub async fn count_posts()->x{
-//     let number_of_posts=sqlx::query!(SELECT count(title) FROM posts);
-//     println!("😊😊😊😊😊😊😊😊😊😊{:?}", number_of_posts);
-//     5
-// }
 
 //pub async fn get_users(params: web::Path<String>) -> Result<HttpResponse,MyError> {
 pub async fn pagination_logic(params: web::Query<PaginationParams>  ) -> Result<Vec<posts>,MyError> {

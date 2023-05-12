@@ -19,7 +19,7 @@ use crate::controller::category_controller::{category_controller};
 use crate::controller::pagination_controller::pagination_display;
 use crate::controller::single_post_controller::get_single_post;
 use crate::model::database::{select_all_from_table};
-use crate::model::pagination_database::{count_posts, pagination_logic};
+use crate::model::pagination_database::{ pagination_logic};
 
 
 async fn index(req: HttpRequest)-> Result<NamedFile>{
