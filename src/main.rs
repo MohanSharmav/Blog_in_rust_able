@@ -33,7 +33,6 @@ async fn main() -> Result<()>{
 //test start
    //  count_posts().await;
      get_all_posts().await;
-
   //   get_users("1".to_string()).await.expect("asdsdssd");
      
 selecting().await.expect("TODO: panic message");

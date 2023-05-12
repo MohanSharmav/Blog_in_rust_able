@@ -47,6 +47,7 @@ let mut vect=Vec::new();
 
     }
 
+
     Ok(vect)
 }
 
@@ -79,6 +80,10 @@ pub async fn select_all_from_table() -> Result<Vec<String>,Error> {
      //   let all_posts_json = posts { title: title.to_string(), description: description.to_string(), name: name.to_string() };
         all_posts.push(all_posts_string);
     }
+
+    let  x:i32= all_posts.len() as i32;
+    println!("xxxxxxxx {:?}",x);
+
 //let all_posts_json=serde_json::to_string(&all_posts).expect("noooooo");
     Ok(all_posts)
 }

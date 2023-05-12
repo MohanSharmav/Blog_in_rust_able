@@ -10,8 +10,16 @@ pub struct PaginationParams {
     per_page: Option<i32>,
 }
 
+#[derive(Deserialize)]
+pub struct Total_pages{
+    total_pages_count: Option<i32>,
+}
+
 
 use actix_web::{ App, Error as ActixError, HttpServer};
+use futures::TryFutureExt;
+use sqlx::postgres::{PgPoolOptions, PgRow};
+use sqlx::Row;
 
 #[derive(Debug)]
 pub struct MyError {
@@ -47,18 +55,23 @@ pub fn paginate<T>(items: Vec<T>, page: i32, per_page: i32) -> Vec<T> {
     items.into_iter().skip(start_index as usize).take(per_page as usize).collect()
 }
 
+//
+// pub async  fn  get_count_of_posts(x:i32) ->i32 {
+//     println!("{:?}",x);
+//     let v=x as i32;
+//   //  static mut n: i32 = v;
+//     let total_pages_count= x  as i32;
+//     println!("😊😊😊😊😊😊{:?}",total_pages_count);
+//
+//     total_pages_count
+//     //println!("{:?}",n.to_string());
+//
+// }
 
 //pub async fn get_users(params: web::Path<String>) -> Result<HttpResponse,MyError> {
-pub async fn pagination_logic(params: web::Query<PaginationParams>  ) -> Result<Vec<posts>,MyError> {
+pub async fn pagination_logic(params: web::Query<PaginationParams>  ) -> Result<Vec<posts>,MyError>
+{
 
-//  let users = vec!["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy"];
-    // let page = params.page.unwrap_or(1);
-    // let per_page = params.per_page.unwrap_or(5);
-    // let page = params.page.unwrap_or(1);
-    // let per_page = params.per_page.unwrap_or(1);
-  //  <--users?page=2&limit=1/>
-    // let  page =2;
-    // let per_page =1;
     let page = params.page.unwrap_or(1);
     let per_page = params.per_page.unwrap_or(3);
 
