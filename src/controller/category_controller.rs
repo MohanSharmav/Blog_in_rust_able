@@ -20,6 +20,7 @@ pub async fn category_controller(path: web::Path<String>)->HttpResponse
 
     println!(" 😋  😋  😋 {:?}",category_postinng);
     let html = handlebars.render("category", &json!({"p":&category_postinng})).unwrap() ;
+
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)

@@ -46,9 +46,7 @@ let mut vect=Vec::new();
         vect.push(names);
 
     }
-// let x=std::mem::replace(&mut Foo,"a");
-  //  println!("xxxxx x x x x{:?}",x);
-  //  let json=serde_json::to_string(&vect).expect("asdasd");
+
     Ok(vect)
 }
 

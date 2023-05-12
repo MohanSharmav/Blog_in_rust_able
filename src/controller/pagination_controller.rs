@@ -2,7 +2,7 @@ use std::fs;
 use actix_web::{HttpResponse, web};
 use serde_json::json;
 use warp::path;
-use crate::model::pagination_database::{get_users, PaginationParams};
+use crate::model::pagination_database::{pagination_logic, PaginationParams};
 
 pub async fn pagination_display(params: web::Query<PaginationParams> ) ->HttpResponse{
    // let mut titles=path.into_inner();
@@ -16,7 +16,7 @@ pub async fn pagination_display(params: web::Query<PaginationParams> ) ->HttpRes
         .register_template_string("pagination_page", &index_template).expect("TODO: panic message");
 
 
-    let paginators=get_users(params).await.expect("Aasd");
+    let paginators= pagination_logic(params).await.expect("Aasd");
 
     let html = handlebars.render("pagination_page", &json!({"a":&paginators})).unwrap() ;
     HttpResponse::Ok()
