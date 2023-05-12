@@ -72,14 +72,14 @@ impl ResponseError for MyError {
 
 
 }
-fn paginate<T>(items: Vec<T>, page: i32, per_page: i32) -> Vec<T> {
+pub fn paginate<T>(items: Vec<T>, page: i32, per_page: i32) -> Vec<T> {
     let start_index = (page - 1) * per_page;
     let end_index = start_index + per_page;
     items.into_iter().skip(start_index as usize).take(per_page as usize).collect()
 }
 
 //pub async fn get_users(params: web::Path<String>) -> Result<HttpResponse,MyError> {
-pub async fn get_users(params: web::Query<PaginationParams>  ) -> Result<HttpResponse,MyError> {
+pub async fn get_users(params: web::Query<PaginationParams>  ) -> Result<Vec<posts>,MyError> {
 
 //  let users = vec!["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy"];
     // let page = params.page.unwrap_or(1);
@@ -97,8 +97,8 @@ pub async fn get_users(params: web::Query<PaginationParams>  ) -> Result<HttpRes
 
 
     println!("😀😀😀😀😀😀😀{:?}", paginated_users);
-     let response = HttpResponse::Ok().json(paginated_users);
-    Ok(response)
+     // let response = HttpResponse::Ok().json(paginated_users);
+    Ok(paginated_users)
   //  Ok(())
 }
 
