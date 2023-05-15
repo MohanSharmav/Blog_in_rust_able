@@ -6,8 +6,21 @@ use sqlx::{Error, Row};
 use warp::path;
 use crate::model::database::{posts, select_posts};
 use crate::model::pagination_database::{ pagination_logic, PaginationParams};
+use std::fmt::Debug;
+use sqlx::postgres::PgRow;
 
 
+/*fn setup-connection () -> poll{
+    // returns connection
+}
+
+pub async  fn  get_count_of_posts () -> i32 {
+    // Returns i32 count of all posts in database table
+}
+
+pub async  fn  get_posts (limit:i32, offset:i32) -> i32 {
+    // Returns only limit number of posts, starting from the offset
+}*/
 
 pub async  fn  get_count_of_posts () -> HttpResponse {
     // println!("{:?}",x);
@@ -28,11 +41,10 @@ pub async  fn  get_count_of_posts () -> HttpResponse {
     let mut all_posts = Vec::new();
 
 
-    let rows = sqlx::query("SELECT title,description,name FROM posts")
-        .fetch_all(&pool)
+    let rows = sqlx::query("SELECT COUNT(*) FROM posts")
+        .fetch_one(&pool)
         .await
         .unwrap();
-
 
 
     for row in rows {
