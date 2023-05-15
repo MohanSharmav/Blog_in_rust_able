@@ -76,11 +76,12 @@ pub async fn pagination_logic(params: web::Query<PaginationParams>  ) -> Result<
     let per_page = params.per_page.unwrap_or(3);
 
 
-    let posts_pagination:Vec<posts>= select_posts().await.expect("maosdso");
-    let paginated_users = paginate(posts_pagination, page, per_page);
+    let mut posts_pagination:Vec<posts>= select_posts().await.expect("maosdso");
+    let paginated_users = paginate(posts_pagination.clone(), page, per_page);
 
 
-    println!("😀😀😀😀😀😀😀{:?}", paginated_users);
+    let posts_per_page_length = posts_pagination.len();
+    println!("😀😀😀😀😀😀😀{:?}", &posts_per_page_length);
      // let response = HttpResponse::Ok().json(paginated_users);
     Ok(paginated_users)
   //  Ok(())

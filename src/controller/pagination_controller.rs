@@ -1,19 +1,20 @@
 use std::fs;
 use actix_web::{HttpResponse, web};
 use serde_json::json;
+use sqlx::postgres::PgPoolOptions;
+use sqlx::{Error, Row};
 use warp::path;
+use crate::model::database::{posts, select_posts};
 use crate::model::pagination_database::{ pagination_logic, PaginationParams};
 
 
 
-pub async  fn  get_count_of_posts(x:i32) -> HttpResponse {
-    println!("{:?}",x);
-    let v=x as i32;
-    //  static mut n: i32 = v;
-    let total_pages_count= x  as i32;
-    println!("😊😊😊😊😊😊{:?}",total_pages_count);
-
-
+pub async  fn  get_count_of_posts () -> HttpResponse {
+    // println!("{:?}",x);
+    // let v=x as i32;
+    // //  static mut n: i32 = v;
+    // let total_pages_count= x  as i32;
+    // println!("😊😊😊😊😊😊{:?}",total_pages_count);
 
     dotenv::dotenv().expect("Unable to load environment variables from .env file");
 
@@ -29,7 +30,11 @@ pub async  fn  get_count_of_posts(x:i32) -> HttpResponse {
 
     let rows = sqlx::query("SELECT title,description,name FROM posts")
         .fetch_all(&pool)
-        .await?;
+        .await
+        .unwrap();
+
+
+
     for row in rows {
         let title: String = row.get("title");
         let description: String = row.get("description");
@@ -40,14 +45,19 @@ pub async  fn  get_count_of_posts(x:i32) -> HttpResponse {
         all_posts.push(all_posts_string);
     }
 
+    let total_posts_count:i32 = all_posts.len() as i32;
+
+    println!("Total posts: {}", total_posts_count);
+
 
     let mut handlebars= handlebars::Handlebars::new();
     let index_template = fs::read_to_string("templates/pagination_page.hbs").unwrap();
     handlebars
         .register_template_string("pagination_page", &index_template).expect("TODO: panic message");
 
-    println!("😊😊😊😊😊😊ijhijijijij 😊😊😊😊😊😊 {:?}",total_pages_count);
-    let html = handlebars.render("pagination_page", &json!({"bb":&total_pages_count})).unwrap() ;
+    println!("😊😊😊😊😊😊ijhijijijij 😊😊😊😊😊😊 {:?}",total_posts_count);
+    let html = handlebars.render("pagination_page", &json!({"bb":&total_posts_count,"yy":"uuihiuhuihiuhuih"})).unwrap() ;
+
 
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
@@ -58,9 +68,20 @@ pub async  fn  get_count_of_posts(x:i32) -> HttpResponse {
 pub async fn pagination_display(params: web::Query<PaginationParams> ) ->HttpResponse{
    // let mut titles=path.into_inner();
 
-    get_count_of_posts().await.expect("asdasd");
+    let mut posts_pagination:Vec<posts>= select_posts().await.expect("maosdso");
+let mut total_posts_length:i32= posts_pagination.len() as i32;
+
+    total_posts_length=total_posts_length/3;
+
+    let mut pages_count=Vec::new();
+    for i in 0..total_posts_length{
+     pages_count.push(i+1 as i32);
+    }
+
+    println!("pagesss count{:?}", pages_count);
+ //   println!("zzzzzzzzzzzzzz{:?}", total_posts_length);
 // query_single_post(titles.clone()).await.expect("TODO: panic message");
-    println!("asdsadadsdadadadadadadadadadadadadadad");
+ //   println!("asdsadadsdadadadadadadadadadadadadadad");
 
     let mut handlebars= handlebars::Handlebars::new();
     let index_template = fs::read_to_string("templates/pagination_page.hbs").unwrap();
@@ -75,7 +96,7 @@ pub async fn pagination_display(params: web::Query<PaginationParams> ) ->HttpRes
 
 //    println!("s😊😊😊😊😊😊{:?}", pagination_count);
 
-    let html = handlebars.render("pagination_page", &json!({"a":&paginators})).unwrap() ;
+    let html = handlebars.render("pagination_page", &json!({"a":&paginators,"tt":&total_posts_length,"pages_count":pages_count})).unwrap() ;
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)

@@ -6,9 +6,13 @@
 </head>
 <body>
 <p>
-{{bb}}
+<ul>
 
-<p>asddasdasdas</p>
+
+
+</ul>
+
+
     {{#each a}}
     <a href="/posts/{{this.title}}">
         {{#each this}}  " "
@@ -18,15 +22,22 @@
 </p>
 
 
-<div class="pagination_section">
 
-    <a href="?page=1&limit=1">1</a>
-    <a href="?page=2&limit=1">2</a>
-    <a href="?page=3&limit=1">3</a>
-    <a href="?page=4&limit=1">4</a>
-    <a href="?page=5&limit=1">5</a>
-
+<div class="pagination_logic">
+    {{#each pages_count }}
+   <a href="?page={{this}}">{{this}}</a>
+    {{/each}}
 </div>
+
+<!--<div class="pagination_section">-->
+
+<!--    <a href="?page=1&limit=1">1</a>-->
+<!--    <a href="?page=2&limit=1">2</a>-->
+<!--    <a href="?page=3&limit=1">3</a>-->
+<!--    <a href="?page=4&limit=1">4</a>-->
+<!--    <a href="?page=5&limit=1">5</a>-->
+
+<!--</div>-->
 </p>
 </body>
 </html>
